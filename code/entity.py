@@ -8,7 +8,7 @@ class Entity(ABC):
     def __init__(self, name: str, position: tuple):
         self.name = name
         # Carregamos as imagens genéricas, porque podemos carregar imagens para o fundo, inimigos ou a nave
-        self.surf = pygame.image.load('./assets/' + name + '.png')
+        self.surf = pygame.image.load('./assets/' + name + '.png').convert_alpha()
         # Desenhamos o retângulo nas posições informadas
         self.rect = self.surf.get_rect(left=position[0], top=position[1])
         self.speed = 0

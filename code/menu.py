@@ -11,7 +11,7 @@ class Menu:
     def __init__(self, window):
         self.window = window
         # Carregamos uma imagem
-        self.surf = pygame.image.load("./assets/MenuBg.png")
+        self.surf = pygame.image.load("./assets/MenuBg.png").convert_alpha()
         # Criamos um retângulo
         self.rect = self.surf.get_rect(left=0, top=0)
 
