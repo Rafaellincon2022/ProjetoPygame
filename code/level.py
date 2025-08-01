@@ -1,11 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import random
 import sys
 
 import pygame.display
 from pygame import Surface, Rect
 from pygame.font import Font
-from code.const import COLOR_WHITE, WINDOW_HEIGHT
+from code.const import COLOR_WHITE, WINDOW_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIMER
 from code.entity import Entity
 from code.entity_Factory import Entity_Factory
 
@@ -21,6 +22,15 @@ class Level:
         self.entity_list: list[Entity] = []
         # Instanciamos a lista com todos os objetos inseridos na fábrica
         self.entity_list.extend(Entity_Factory.get_entity('Level1Bg'))
+        # Instanciamos tudo o que irá ser carregado junto com nosso level - nave do jogador
+        self.entity_list.append(Entity_Factory.get_entity('Player1'))
+
+        # Verificamos o MODO DE JOGO para criarmos as naves do jogador 2
+        if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]:
+            self.entity_list.append(Entity_Factory.get_entity('Player2'))
+
+        # Definindo que os inimigos irão aparecer em tela a cada 2 segundos
+        pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIMER)
 
     def run(self):
         # Carregamos uma música para o level 1
@@ -41,6 +51,11 @@ class Level:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+                # Evento para acionarmos o EVENT_ENEMY e de fato criarmos os inimigos
+                if event.type == EVENT_ENEMY:
+                    choice = random.choice(('Enemy1', 'Enemy2'))
+                    self.entity_list.append(Entity_Factory.get_entity(choice))
 
             # Mostra o tempo de duração da fase
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', COLOR_WHITE, (10, 5))
