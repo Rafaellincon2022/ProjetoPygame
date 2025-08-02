@@ -4,6 +4,9 @@ from abc import ABC, abstractmethod
 
 import pygame.image
 
+from code.const import ENTITY_HEALTH
+
+
 class Entity(ABC):
     def __init__(self, name: str, position: tuple):
         self.name = name
@@ -12,6 +15,7 @@ class Entity(ABC):
         # Desenhamos o retângulo nas posições informadas
         self.rect = self.surf.get_rect(left=position[0], top=position[1])
         self.speed = 0
+        self.health = ENTITY_HEALTH[self.name]
 
     @abstractmethod
     def move(self):

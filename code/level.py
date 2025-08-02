@@ -9,6 +9,7 @@ from pygame.font import Font
 from code.const import COLOR_WHITE, WINDOW_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIMER
 from code.entity import Entity
 from code.entity_Factory import Entity_Factory
+from code.entity_mediator import Entity_Mediator
 
 
 class Level:
@@ -65,6 +66,11 @@ class Level:
             self.level_text(14, f'Entidades: {len(self.entity_list)}', COLOR_WHITE, (10, WINDOW_HEIGHT - 20))
 
             pygame.display.flip()
+
+            # Chamada do método para gerenciar as colisões
+            Entity_Mediator.verify_collision(entity_list=self.entity_list)
+            # Chamada do método para remover as entidades sem vida
+            Entity_Mediator.verify_health(entity_list=self.entity_list)
 
     # Definição do método para configurar as fontes em tela
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):

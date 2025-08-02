@@ -9,9 +9,5 @@ class Enemy(Entity):
         super().__init__(name, position)
 
     def move(self, ):
-        # O centerx seria o controle de velocidade
+        # A nave chega no final apenas - será destruída pelo mediator
         self.rect.centerx -= ENTITY_SPEED[self.name]
-        # Se o canto direito da imagem chegar na posição 0
-        if self.rect.right <= 0:
-            # A imagem retorna para a posição mais à esquerda da tela
-            self.rect.left = WINDOW_WIDTH
