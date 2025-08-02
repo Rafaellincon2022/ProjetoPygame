@@ -7,9 +7,11 @@ import pygame.display
 from pygame import Surface, Rect
 from pygame.font import Font
 from code.const import COLOR_WHITE, WINDOW_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIMER
+from code.enemy import Enemy
 from code.entity import Entity
 from code.entity_Factory import Entity_Factory
 from code.entity_mediator import Entity_Mediator
+from code.player import Player
 
 
 class Level:
@@ -46,6 +48,15 @@ class Level:
             for entity in self.entity_list:
                 self.window.blit(source=entity.surf, dest=entity.rect)
                 entity.move()
+
+                # Instanciamos os tiros, seja do inimigo, seja do jogador na lista de entidades
+                if isinstance(entity, (Player, Enemy)):
+                    # Variável para receber o retorno dos tiros
+                    shoot = entity.Shoot()
+                    # Verifica se o retorno não é vazio
+                    if shoot is not None:
+                        # Se existir retorno, adiciona na lista de entidades
+                        self.entity_list.append(shoot)
 
             # Evento para finalizarmos o jogo mesmo com ele em execução
             for event in pygame.event.get():

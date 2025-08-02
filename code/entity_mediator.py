@@ -1,3 +1,6 @@
+from code.EnemyShot import EnemyShot
+from code.PlayerShot import PlayerShot
+from code.const import WINDOW_WIDTH
 from code.enemy import Enemy
 from code.entity import Entity
 
@@ -10,8 +13,20 @@ class Entity_Mediator:
         # Verifica se a instância criada é de inimigos apenas
         if isinstance(ent, Enemy):
             # Verificar se ela está fora da tela
-            if ent.rect.right < 0:
+            if ent.rect.right <= 0:
                 # Recebe 0 de vida - mas ainda não é destruída
+                ent.health = 0
+
+        # Precisamos destruir também os tiros do jogador que estão saindo da tela
+        if isinstance(ent, PlayerShot):
+            if ent.rect.left >= WINDOW_WIDTH:
+                ent.health = 0
+
+        # Precisamos destruir também os tiros do inimigo que estão saindo da tela
+        if isinstance(ent, EnemyShot):
+            # Se os tiros saindo da direita para a esquerda forem <= 0
+            if ent.rect.right <= 0:
+                # A vida recebe 0
                 ent.health = 0
 
     @staticmethod
