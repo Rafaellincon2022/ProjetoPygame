@@ -6,7 +6,7 @@ import sys
 import pygame.display
 from pygame import Surface, Rect
 from pygame.font import Font
-from code.const import COLOR_WHITE, WINDOW_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIMER
+from code.const import COLOR_WHITE, WINDOW_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIMER, COLOR_GREEN, COLOR_CYAN
 from code.enemy import Enemy
 from code.entity import Entity
 from code.entity_Factory import Entity_Factory
@@ -57,6 +57,14 @@ class Level:
                     if shoot is not None:
                         # Se existir retorno, adiciona na lista de entidades
                         self.entity_list.append(shoot)
+
+                # Mostra a saúde do Player 1
+                if entity.name == 'Player1':
+                    self.level_text(14, f'Player 1 - Health: {entity.health} | Score: {entity.score}', COLOR_GREEN, (10, 25))
+
+                # Mostra a saúde do Player 2
+                if entity.name == 'Player2':
+                    self.level_text(14, f'Player 2 - Health: {entity.health} | Score: {entity.score}', COLOR_CYAN, (10, 45))
 
             # Evento para finalizarmos o jogo mesmo com ele em execução
             for event in pygame.event.get():
