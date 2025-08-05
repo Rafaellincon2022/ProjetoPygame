@@ -25,8 +25,21 @@ class Game:
 
             # Se as opções de menu forem uma das jogáveis, executa o LEVEL.RUN()
             if menu_return in [MENU_OPTION[0], MENU_OPTION[1], MENU_OPTION[2]]:
-                level = Level(self.window, 'Level1', menu_return)
-                level_return = level.run()
+                # Criamos uma variável que irá armazenar a pontuação dos jogadores
+                player_score = [0, 0]
+                # Chama o Level 1 em tela
+                level = Level(self.window, 'Level1', menu_return, player_score)
+                # Armamzena o retorno do level
+                level_return = level.run(player_score)
+
+                # Se o retorno for True
+                if level_return:
+                    # Chamamos o Level 2 em tela
+                    level = Level(self.window, 'Level2', menu_return, player_score)
+                    # Armamzena o retorno do level
+                    level_return = level.run(player_score)
+
+
 
             elif menu_return == MENU_OPTION[4]:
                 pygame.quit()

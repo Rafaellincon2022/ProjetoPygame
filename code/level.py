@@ -6,7 +6,8 @@ import sys
 import pygame.display
 from pygame import Surface, Rect
 from pygame.font import Font
-from code.const import COLOR_WHITE, WINDOW_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIMER, COLOR_GREEN, COLOR_CYAN
+from code.const import COLOR_WHITE, WINDOW_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIMER, COLOR_GREEN, COLOR_CYAN, \
+    EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL
 from code.enemy import Enemy
 from code.entity import Entity
 from code.entity_Factory import Entity_Factory
@@ -15,8 +16,8 @@ from code.player import Player
 
 
 class Level:
-    def __init__(self, window, name, game_mode):
-        self.timeout = 20000  # 20 segundos
+    def __init__(self, window: Surface, name: str, game_mode: str, player_score: list[int]):
+        self.timeout = TIMEOUT_LEVEL  # 20 segundos
         self.window = window
         self.name = name
         self.game_mode = game_mode
@@ -24,18 +25,35 @@ class Level:
         # Criamos uma lista vazia
         self.entity_list: list[Entity] = []
         # Instanciamos a lista com todos os objetos inseridos na fábrica
-        self.entity_list.extend(Entity_Factory.get_entity('Level1Bg'))
+        self.entity_list.extend(Entity_Factory.get_entity(self.name + 'Bg'))
         # Instanciamos tudo o que irá ser carregado junto com nosso level - nave do jogador
-        self.entity_list.append(Entity_Factory.get_entity('Player1'))
+        # self.entity_list.append(Entity_Factory.get_entity('Player1'))
+
+        # Criamos uma variável para armazenar o jogador 1
+        player = Entity_Factory.get_entity('Player1')
+        # A variável utiliza o método score para receber a pontuação do jogador 1 (posição 0)
+        player.score = player_score[0]
+        # Agora nós fazemos o append da lista
+        self.entity_list.append(player)
 
         # Verificamos o MODO DE JOGO para criarmos as naves do jogador 2
         if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]:
-            self.entity_list.append(Entity_Factory.get_entity('Player2'))
+            # self.entity_list.append(Entity_Factory.get_entity('Player2'))
+
+            # Criamos uma variável para armazenar o jogador 1
+            player = Entity_Factory.get_entity('Player2')
+            # A variável utiliza o método score para receber a pontuação do jogador 2 (posição 1)
+            player.score = player_score[1]
+            # Agora nós fazemos o append da lista
+            self.entity_list.append(player)
 
         # Definindo que os inimigos irão aparecer em tela a cada 2 segundos
         pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIMER)
 
-    def run(self):
+        # Evento para identificar a vitória do jogador e finalização do level
+        pygame.time.set_timer(EVENT_TIMEOUT, TIMEOUT_STEP)
+
+    def run(self, player_score: list[int]):
         # Carregamos uma música para o level 1
         pygame.mixer_music.load(f'./assets/{self.name}.mp3')
         # A música será tocada indefinidamente -1
@@ -76,6 +94,34 @@ class Level:
                 if event.type == EVENT_ENEMY:
                     choice = random.choice(('Enemy1', 'Enemy2'))
                     self.entity_list.append(Entity_Factory.get_entity(choice))
+
+                # Evento para checar se é do tipo TIMEOUT
+                if event.type == EVENT_TIMEOUT:
+                    # Retira a quantidade (STEP) do timeout definido
+                    self.timeout -= TIMEOUT_STEP
+                    # Quando o timeout chega em 0, retorna TRUE
+                    if self.timeout == 0:
+                        # Aqui nós varremos as entidades da lista
+                        for entity in self.entity_list:
+                            # Se existir o P1, atualizamos o score
+                            if isinstance(entity, Player) and entity.name == 'Player1':
+                                player_score[0] = entity.score
+                            # Se existir o P2, atualizamos o score
+                            if isinstance(entity, Player) and entity.name == 'Player2':
+                                player_score[1] = entity.score
+                        return True
+
+                # Busca jogador
+                found_player = False
+                # Verifica se o player existe
+                for entity in self.entity_list:
+                    # Se existe uma instância de Player (pode ser P1 ou P2)
+                    if isinstance(entity, Player):
+                        found_player = True
+
+                # Se o jogador não for encontrado, retorna False
+                if not found_player:
+                    return False
 
             # Mostra o tempo de duração da fase
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', COLOR_WHITE, (10, 5))
