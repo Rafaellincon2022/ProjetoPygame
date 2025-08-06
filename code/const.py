@@ -1,5 +1,6 @@
 # Constantes que iniciam com C
 import pygame
+from pygame.examples.grid import WINDOW_WIDTH
 
 COLOR_ORANGE = (255, 128, 0)
 COLOR_WHITE = (255, 255, 255)
@@ -72,13 +73,13 @@ ENTITY_SPEED = {
     'Level2Bg3': 3,
     'Level2Bg4': 4,
     'Player1': 3,
-    'Player1Shot': 1,
+    'Player1Shot': 2,
     'Player2': 3,
-    'Player2Shot': 1,
-    'Enemy1' : 2,
+    'Player2Shot': 3,
+    'Enemy1' : 1,
     'Enemy1Shot' : 5,
     'Enemy2' : 1,
-    'Enemy2Shot' : 2
+    'Enemy2Shot' : 3
 }
 
 ENTITY_HEALTH = {
@@ -107,8 +108,8 @@ ENTITY_HEALTH = {
 ENTITY_SHOT_DELAY = {
     'Player1': 20,
     'Player2': 15,
-    'Enemy1': 50,
-    'Enemy2': 50
+    'Enemy1': 20,
+    'Enemy2': 40
 }
 
 # Constantes que iniciam com M
@@ -131,7 +132,24 @@ PLAYER_KEY_SHOOT = {'Player1': pygame.K_RCTRL,
                  'Player2': pygame.K_LCTRL}
 
 # Constantes que iniciam com S
-SPAWN_TIMER = 4000
+SCORE_POSITION = {
+    'Title': (WINDOW_WIDTH / 3, 50),
+    'EnterName': (WINDOW_WIDTH / 3, 80),
+    'Label': (WINDOW_WIDTH / 3, 90),
+    'Name': (WINDOW_WIDTH / 3, 110),
+    0: (WINDOW_WIDTH / 3, 110),
+    1: (WINDOW_WIDTH / 3, 130),
+    2: (WINDOW_WIDTH / 3, 150),
+    3: (WINDOW_WIDTH / 3, 170),
+    4: (WINDOW_WIDTH / 3, 190),
+    5: (WINDOW_WIDTH / 3, 210),
+    6: (WINDOW_WIDTH / 3, 230),
+    7: (WINDOW_WIDTH / 3, 250),
+    8: (WINDOW_WIDTH / 3, 270),
+    9: (WINDOW_WIDTH / 3, 290),
+}
+
+SPAWN_TIMER = 2000
 
 # Constantes que iniciam com T
 TIMEOUT_STEP = 100
