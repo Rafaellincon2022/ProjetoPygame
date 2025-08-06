@@ -111,4 +111,3 @@ class Entity_Mediator:
                     Entity_Mediator.__give_score(ent, entity_list)
                 # Aqui ela será destruída
                 entity_list.remove(ent)
-

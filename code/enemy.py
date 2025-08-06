@@ -10,7 +10,7 @@ class Enemy(Entity):
         super().__init__(name, position)
         self.shot_delay = ENTITY_SHOT_DELAY[self.name]
 
-    def move(self, ):
+    def move(self):
         # A nave chega no final apenas - será destruída pelo mediator
         self.rect.centerx -= ENTITY_SPEED[self.name]
 
