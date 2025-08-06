@@ -56,6 +56,8 @@ class Level:
     def run(self, player_score: list[int]):
         # Carregamos uma música para o level 1
         pygame.mixer_music.load(f'./assets/{self.name}.mp3')
+        # Diminui o volume da música
+        pygame.mixer_music.set_volume(0.2)
         # A música será tocada indefinidamente -1
         pygame.mixer_music.play(-1)
         clock = pygame.time.Clock()
